@@ -15,7 +15,7 @@ public class Main {
         root2.setRight(new BinNode(10));
         root2.getLeft().setLeft(new BinNode(2));
         root2.getLeft().setRight(new BinNode(6));
-        System.out.println(root2);
+        //System.out.println(root2);
         //ex11a(root);
         //System.out.println(ex11b(root));
         //System.out.println(ex11c(root));
@@ -27,28 +27,16 @@ public class Main {
         //System.out.println(ex1(root));
         //System.out.println(ex2(root));
         //System.out.println(ex18(root,root2));
-        System.out.println(ex20(root,4));
+        //System.out.println(ex20(root,4));
+        //System.out.println(ex23a(root));
+        //System.out.println(ex23b(root));
+        //System.out.println("ex23c:" + (ex23a(root) - ex23b(root)));
+        //System.out.println(ex27(root));
+        //System.out.println(ex26(root));
+        //System.out.println(ex22(root));
+        System.out.println(ex21(root));
+    
 
-		BinNode<Range> t = new BinNode<>(new Range(1, 10));
-        BinNode<Range> leftChild = new BinNode<>(new Range(1, 4));
-        BinNode<Range> rightChild = new BinNode<>(new Range(5, 10));
-
-        // חיבור בין הצמתים
-        t.setLeft(leftChild);
-        t.setRight(rightChild);
-
-        // יצירת צמתים נוספים
-        BinNode<Range> leftLeftChild = new BinNode<>(new Range(1, 1));
-        leftChild.setLeft(leftLeftChild);
-
-        BinNode<Range> rightLeftChild = new BinNode<>(new Range(5, 6));
-        rightChild.setLeft(rightLeftChild);
-        
-        BinNode<Range> rightRightChild = new BinNode<>(new Range(8, 10));
-        rightChild.setRight(rightRightChild);
-
-        // קריאה לפונקציה ex6 על העץ
-        System.out.println(order(t));
 
 	}
 
@@ -248,8 +236,8 @@ public class Main {
         
         return ex20(t1,num-1);
     }
-
-	public static boolean order(BinNode<Range> t) 
+    
+    public static boolean order(BinNode<Range> t) 
 	{
         if (t == null)
             return true;
@@ -269,5 +257,76 @@ public class Main {
         return order(t.getRight()) && order(t.getLeft());
     }
     
+    public static int ex23a(BinNode<Integer> t1) 
+	{  
+        if (!t1.hasLeft() && !t1.hasRight())
+            return t1.getValue();
+            
+        if (!t1.hasRight())
+            return Math.max(t1.getValue(), ex23a(t1.getLeft()));
+            
+        if (!t1.hasLeft())
+            return Math.max(t1.getValue(), ex23a(t1.getRight()));
+            
+        return Math.max(t1.getValue(),Math.max(ex23a(t1.getRight()), ex23a(t1.getLeft())));
+    }
     
+    public static int ex23b(BinNode<Integer> t1) 
+	{  
+        if (!t1.hasLeft() && !t1.hasRight())
+            return t1.getValue();
+            
+        if (!t1.hasRight())
+            return Math.min(t1.getValue(), ex23b(t1.getLeft()));
+            
+        if (!t1.hasLeft())
+            return Math.min(t1.getValue(), ex23b(t1.getRight()));
+            
+        return Math.min(t1.getValue(),Math.min(ex23b(t1.getRight()), ex23b(t1.getLeft())));
+    }
+    
+    public static int ex27(BinNode<Integer> t1) 
+	{  
+        if (!t1.hasLeft() && !t1.hasRight())
+            return 0;
+            
+        if (!t1.hasRight())
+            return ex27(t1.getLeft()) +1 ;
+            
+        if (!t1.hasLeft())
+            return ex27(t1.getRight()) +1;
+            
+        return Math.max(ex27(t1.getRight())+1 ,ex27(t1.getLeft())+1);
+    }
+    
+    public static boolean ex26(BinNode<Integer> t1) 
+	{  
+        return Math.pow(2, ex27(t1)) == ex14(t1);
+    }
+    
+    public static boolean ex22(BinNode<Integer> t1) 
+	{  
+        if (!t1.hasLeft() && !t1.hasRight())
+            return true;
+            
+        if (!t1.hasRight())
+            return false ;
+            
+        if (!t1.hasLeft())
+            return false;
+            
+        return ex22(t1.getRight()) && ex22(t1.getLeft());
+    }
+    
+    public static boolean ex21(BinNode<Integer> t1) 
+	{  
+        if (!t1.hasLeft() && !t1.hasRight())
+            return true;
+            
+        if (Math.abs(ex27(t1.getRight())-ex27(t1.getLeft()))>1)
+            return false ;
+            
+        return ex21(t1.getRight()) && ex21(t1.getLeft());
+    }
+
 }
